@@ -69,14 +69,18 @@
             [: range $name, $security := .Method.Security :]
               [: if $security.Scheme.IsApiKey :]
                 <tr class="form-group">
-                    <td>API key</td>
-                    <td>
-                       <select style="font-size: 16px" id="api-key-select" class="form-control api-key-select">
-                           <option value="">None</option>
-                       </select>
-                       <input id="api-key-input" type="text" name="api-key" value="" placeholder="API key" class="form-control"/>
-                    </td>
-                    <td>API key to be used for request</td>
+                    <td>[: $security.Scheme.ParamName :]</td>
+                   [: if eq $security.Scheme.ParamName "Authorization" :]
+                     <td>
+                     <input id="api-key-input" type="text" name="api-key" value="" placeholder="Bearer + Token" class="form-control"/>
+                     </td>
+                     <td>Type 'Bearer TOKEN' to correctly set the JWT credential for user</td>
+                     [: else :]
+                       <td>
+                       <input id="api-key-input" type="text" name="api-key" value="" placeholder=[: $security.Scheme.ParamName :] class="form-control"/>
+                       </td>
+                       <td>The customer API Key should be used here</td>
+                     [: end :]
                 </tr>
               [: end :]
               [: if $security.Scheme.IsOAuth2 :]
